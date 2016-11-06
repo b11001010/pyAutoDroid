@@ -68,7 +68,25 @@ def swipe(device, src, dst, duration=500):
     return
 
 def send_tap_event(device, loc, event_num):
-    os.system(ADB_PATH+' -s '+device+' shell /mnt/shared/Other/screentap_'+str(event_num)+' '+str(loc[0])+' '+str(loc[1]))
+    os.system(ADB_PATH+' -s '+device+' shell "'
+        +'sendevent /dev/input/event'+str(event_num)+' 1 330 1;'
+        +'sendevent /dev/input/event'+str(event_num)+' 3 58 1;'
+        +'sendevent /dev/input/event'+str(event_num)+' 3 53 '+str(loc[0])+';'
+        +'sendevent /dev/input/event'+str(event_num)+' 3 54 '+str(loc[1])+';'
+        +'sendevent /dev/input/event'+str(event_num)+' 0 2 0;'
+        +'sendevent /dev/input/event'+str(event_num)+' 0 0 0;'
+        +'sendevent /dev/input/event'+str(event_num)+' 0 2 0;'
+        +'sendevent /dev/input/event'+str(event_num)+' 0 0 0;'
+        +'sendevent /dev/input/event'+str(event_num)+' 1 330 0;'
+        +'sendevent /dev/input/event'+str(event_num)+' 3 58 0;'
+        +'sendevent /dev/input/event'+str(event_num)+' 3 53 4291588597;'
+        +'sendevent /dev/input/event'+str(event_num)+' 3 54 4294258463;'
+        +'sendevent /dev/input/event'+str(event_num)+' 0 2 0;'
+        +'sendevent /dev/input/event'+str(event_num)+' 0 0 0;"'
+    )
+    return
+
+
     return
 
 def open_activity(device, url_scheme):
