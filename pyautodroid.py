@@ -86,9 +86,6 @@ def send_tap_event(device, loc, event_num):
     )
     return
 
-
-    return
-
 def open_activity(device, url_scheme):
     os.system(ADB_PATH+' -s '+device+' shell am start '+url_scheme)
     return
