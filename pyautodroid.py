@@ -44,8 +44,8 @@ def find_imgs(device, temp, maxLen=10, threshold=0.97):
     # Apply template Matching
     matches = cv2.matchTemplate(img,template,cv2.TM_CCORR_NORMED)
 
-    for y in xrange(matches.shape[0]):
-        for x in xrange(matches.shape[1]):
+    for y in range(matches.shape[0]):
+        for x in range(matches.shape[1]):
             if matches[y][x] > threshold:
                 flag = True
                 for element in matchList:
@@ -113,8 +113,8 @@ def get_input_event_num(device):
     line = ""
     while True:
         line = p.stdout.readline().strip()
-        if "Android Input" in line:
+        if "Android Input" in line.decode('utf-8'):
             break
         buf = line
     p.kill()
-    return buf[-1]
+    return buf.decode('utf-8')[-1]
