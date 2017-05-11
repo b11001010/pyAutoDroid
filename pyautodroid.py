@@ -5,7 +5,7 @@ import os
 from subprocess import Popen, PIPE
 import cv2
 
-ADB_PATH = os.getenv('APPDATA')+'/Nox/bin/nox_adb.exe'
+ADB_PATH = 'C:/Program Files (x86)/Nox/bin/nox_adb.exe'
 SHARED_DIR = os.getenv('HOMEPATH')+'/Nox_share'
 LATEST_MATCH_LOC = [0, 0]
 
