@@ -2,7 +2,7 @@
 '''Android UI Testing Module for Nox App Player'''
 
 import os
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, call
 import cv2
 
 ADB_PATH = 'C:/Program Files (x86)/Nox/bin/nox_adb.exe'
@@ -60,15 +60,15 @@ def find_imgs(device, temp, maxLen=10, threshold=0.97):
     return map(lambda p: (int(p[0] + w/2), int(p[1] + h/2)), matchList)
 
 def tap(device, loc, duration=''):
-    os.system(ADB_PATH+' -s '+device+' shell input tap '+str(loc[0])+' '+str(loc[1])+' '+str(duration))
+    call(ADB_PATH+' -s '+device+' shell input tap '+str(loc[0])+' '+str(loc[1])+' '+str(duration))
     return
 
 def swipe(device, src, dst, duration=500):
-    os.system(ADB_PATH+' -s '+device+' shell input swipe '+str(src[0])+' '+str(src[1])+' '+str(dst[0])+' '+str(dst[1])+' '+str(duration))
+    call(ADB_PATH+' -s '+device+' shell input swipe '+str(src[0])+' '+str(src[1])+' '+str(dst[0])+' '+str(dst[1])+' '+str(duration))
     return
 
 def send_tap_event(device, loc, event_num):
-    os.system(ADB_PATH+' -s '+device+' shell "'
+    call(ADB_PATH+' -s '+device+' shell "'
         +'sendevent /dev/input/event'+str(event_num)+' 1 330 1;'
         +'sendevent /dev/input/event'+str(event_num)+' 3 58 1;'
         +'sendevent /dev/input/event'+str(event_num)+' 3 53 '+str(loc[0])+';'
@@ -87,24 +87,24 @@ def send_tap_event(device, loc, event_num):
     return
 
 def open_activity(device, url_scheme):
-    os.system(ADB_PATH+' -s '+device+' shell am start '+url_scheme)
+    call(ADB_PATH+' -s '+device+' shell am start '+url_scheme)
     return
 
 def pull(device, remote, local='.'):
-    os.system(ADB_PATH+' -s '+device+' pull '+remote+' '+local)
+    call(ADB_PATH+' -s '+device+' pull '+remote+' '+local)
     return
 
 def push(device, local, remote):
-    os.system(ADB_PATH+' -s '+device+' push '+local+' '+remote)
+    call(ADB_PATH+' -s '+device+' push '+local+' '+remote)
     return
 
 def stop_app(device, package):
-    os.system(ADB_PATH+' -s '+device+' shell am force-stop '+package)
+    call(ADB_PATH+' -s '+device+' shell am force-stop '+package)
     return
 
 def get_screen(device, path='/mnt/shared/Image/'):
     file_id = device.replace(':', '_')
-    os.system(ADB_PATH+' -s '+device+' shell screencap -p '+path+'screen'+file_id+'.png')
+    call(ADB_PATH+' -s '+device+' shell screencap -p '+path+'screen'+file_id+'.png')
     return
 
 def get_input_event_num(device):
