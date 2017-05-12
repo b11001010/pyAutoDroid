@@ -29,12 +29,11 @@ while True:
     if pad.find_img(device, './img/title.png'):
         pad.send_tap_event(device, pad.LATEST_MATCH_LOC, event_num)
 
-    if pad.find_img(device, './img/ok.png'):
+    # It is possible to set a threshold value of pattern matching.
+    if pad.find_img(device, './img/ok.png', threshold=0.998):
         pad.send_tap_event(device, pad.LATEST_MATCH_LOC, event_num)
 
-    if pad.find_img(device, './img/skip.png'):
-        pad.send_tap_event(device, pad.LATEST_MATCH_LOC, event_num)
-
-    if pad.find_img(device, './img/next.png'):
+    # It is also possible to trim template images for faster processing.
+    if pad.find_img(device, './img/next.png', trim=(240, 100, 360, 220)):
         pad.send_tap_event(device, pad.LATEST_MATCH_LOC, event_num)
 ```

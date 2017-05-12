@@ -9,10 +9,13 @@ ADB_PATH = 'C:/Program Files (x86)/Nox/bin/nox_adb.exe'
 SHARED_DIR = os.getenv('HOMEPATH')+'/Nox_share'
 LATEST_MATCH_LOC = [0, 0]
 
-def find_img(device, temp, threshold=0.97):
+def find_img(device, temp, threshold=0.97, trim=(0, 0, 0, 0)):
     file_id = device.replace(':', '_')
-
     img = cv2.imread(SHARED_DIR+'/Image/screen'+file_id+'.png', 1)
+
+    if trim != (0, 0, 0, 0):
+        img = img[trim[1]:trim[3], trim[0]:trim[2]]
+
     template = cv2.imread(temp, 1)
     (h, w, d) = template.shape
 
@@ -25,19 +28,22 @@ def find_img(device, temp, threshold=0.97):
         return False
 
     if max_val > threshold:
-        LATEST_MATCH_LOC[0] = int(max_loc[0] + w/2)
-        LATEST_MATCH_LOC[1] = int(max_loc[1] + h/2)
+        LATEST_MATCH_LOC[0] = trim[0] + int(max_loc[0] + w/2)
+        LATEST_MATCH_LOC[1] = trim[1] + int(max_loc[1] + h/2)
         #print "  ", temp, "= (", LATEST_MATCH_LOC, ")"
         #print "  max_val", max_val
         return True
     else:
         return False
 
-def find_imgs(device, temp, maxLen=10, threshold=0.97):
+def find_imgs(device, temp, maxLen=10, threshold=0.97, trim=(0, 0, 0, 0)):
     matchList = []
     file_id = device.replace(':', '_')
-
     img = cv2.imread(SHARED_DIR+'/Image/screen'+file_id+'.png', 1)
+
+    if trim != (0, 0, 0, 0):
+        img = img[trim[1]:trim[3], trim[0]:trim[2]]
+
     template = cv2.imread(temp, 1)
     (h, w, d) = template.shape
 
@@ -56,8 +62,8 @@ def find_imgs(device, temp, maxLen=10, threshold=0.97):
                 if flag:
                     matchList.append((x, y))
                 if len(matchList) >= maxLen:
-                    return map(lambda p: (int(p[0] + w/2), int(p[1] + h/2)), matchList)
-    return map(lambda p: (int(p[0] + w/2), int(p[1] + h/2)), matchList)
+                    return map(lambda p: (trim[0] + int(p[0] + w/2), trim[1] + int(p[1] + h/2)), matchList)
+    return map(lambda p: (trim[0] + int(p[0] + w/2), trim[1] + int(p[1] + h/2)), matchList)
 
 def tap(device, loc, duration=''):
     call(ADB_PATH+' -s '+device+' shell input tap '+str(loc[0])+' '+str(loc[1])+' '+str(duration))
