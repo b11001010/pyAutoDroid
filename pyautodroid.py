@@ -91,11 +91,11 @@ def open_activity(device, url_scheme):
     return
 
 def pull(device, remote, local='.'):
-    call(ADB_PATH+' -s '+device+' pull '+remote+' '+local)
+    call(ADB_PATH+' -s '+device+' pull "'+remote+'" "'+local+'"')
     return
 
 def push(device, local, remote):
-    call(ADB_PATH+' -s '+device+' push '+local+' '+remote)
+    call(ADB_PATH+' -s '+device+' push "'+local+'" "'+remote+'"')
     return
 
 def stop_app(device, package):
