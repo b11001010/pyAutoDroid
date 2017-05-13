@@ -15,14 +15,13 @@ OpenCV 3.0
 import pyautodroid as pad
 
 device = '127.0.0.1:62001'
+# Identify the device file number to send the tap event.
+event_num = pad.get_input_event_num(device)
 
 while True:
 
     # Take a screenshot and save it to a shared folder.
     pad.get_screen(device)
-
-    # Identify the device file number to send the tap event.
-    event_num = pad.get_input_event_num(device)
 
     # Tap the screen by pattern matching with the template image.
     # send_tap_event() can tap faster than tap().
